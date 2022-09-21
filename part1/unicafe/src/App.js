@@ -31,11 +31,44 @@ const BadCount = (props) => {
     )
 }
 
+const All = (props) => {
+    return (
+        <div>
+            <p>total {props.text}</p>
+        </div>
+    )
+}
+
+const Average = (props) => {
+    return (
+        <div>
+            <p>average {props.text}</p>
+        </div>
+    )
+}
+
+const Positive = (props) => {
+    return (
+        <div>
+            <p>positive {props.text} %</p>
+        </div>
+    )
+}
+
 const App = () => {
     // save clicks of each button to its own state
     const [good, setGood] = useState(0)
     const [neutral, setNeutral] = useState(0)
     const [bad, setBad] = useState(0)
+    function totalReviews() {
+        return (Number(good) + Number(neutral)+ Number(bad))
+    }
+    function averageReviews() {
+        return ((Number(good) -Number(bad))/3)
+    }
+    function positiveReviews() {
+        return ((Number(good)/totalReviews(Number(good) + Number(neutral)+ Number(bad))*100))
+    }
 
     const setToGood = (newGood) => {
         setGood(newGood)
@@ -51,12 +84,15 @@ const App = () => {
         <div>
             <Heading text="give feedback" />
             <Button handleClick={() => setToGood(good + 1)} text="good" />
-            <Button handleClick={() => setToNeutral(neutral + 1)} text="bad" />
-            <Button handleClick={() => setToBad(bad + 1)} text="neutral" />
+            <Button handleClick={() => setToNeutral(neutral + 1)} text="neutral" />
+            <Button handleClick={() => setToBad(bad + 1)} text="bad" />
             <Heading text="statistics" />
             <GoodCount text={good} />
             <NeutralCount text={neutral} />
             <BadCount text={bad} />
+            <All text={totalReviews(good, bad, neutral)}/>
+            <Average text={averageReviews()} />
+            <Positive text={positiveReviews()}/>
         </div>
     )
 }
