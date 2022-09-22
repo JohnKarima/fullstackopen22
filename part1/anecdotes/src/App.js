@@ -23,18 +23,37 @@ const App = () => {
     // console.log(randomAnecdoteNumber)
 
     const [selected, setSelected] = useState(0)
+    const [vote, setVote] = useState(0)
+
 
     const setToSelected = (newSelected) => {
         setSelected(newSelected)
     }
 
+    const setToVote = (newVote) => {
+        setVote(newVote)
+    }
+
+    const points = { 0: 1, 1: 3, 2: 0, 3: 2 }
+    const copy = { ...points }
+    // increment the property 2 value by one
+    let new2 = copy[2] += 1
+
+    console.log([points[2]])
+
+
+
     return (
         <div>
             {anecdotes[selected]}
+            <div>
             <Button
                 handleClick={() => setToSelected(getRndInteger(0, 6))}
                 text="next anecdote"
             />
+            {/* <Button handleClick={() => setToVote(vote + 1)} text="vote" /> */}
+            <Button text="vote" />
+            </div>
         </div>
     )
 }
