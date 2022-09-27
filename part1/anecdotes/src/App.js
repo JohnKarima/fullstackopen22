@@ -1,7 +1,14 @@
 import { useState } from 'react'
+const Header = ({ text }) => <h1>{text}</h1>
 
-const Button = (props) => {
-    return <button onClick={props.handleClick}>{props.text}</button>
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
+
+const Anecdote = ({ text, votes }) => {
+    return (
+        <div>
+            {text} <br /> has {votes} votes
+        </div>
+    )
 }
 
 const App = () => {
@@ -23,37 +30,29 @@ const App = () => {
     // console.log(randomAnecdoteNumber)
 
     const [selected, setSelected] = useState(0)
-    const [vote, setVote] = useState(0)
+    const [votes, setVotes] = useState(anecdotes.map((x) => 0))
 
-
-    const setToSelected = (newSelected) => {
-        setSelected(newSelected)
+    const randomAnecdote = () => {
+        const index = Math.floor(Math.random() * anecdotes.length)
+        setSelected(index)
     }
 
-    const setToVote = (newVote) => {
-        setVote(newVote)
+    const castVote = (value) => {
+        const arr = [...votes]
+        arr[value]++
+        setVotes(arr)
     }
 
-    const points = { 0: 1, 1: 3, 2: 0, 3: 2 }
-    const copy = { ...points }
-    // increment the property 2 value by one
-    let new2 = copy[2] += 1
-
-    console.log([points[2]])
-
-
+    const topVote = votes.indexOf(Math.max(...votes))
 
     return (
         <div>
-            {anecdotes[selected]}
-            <div>
-            <Button
-                handleClick={() => setToSelected(getRndInteger(0, 6))}
-                text="next anecdote"
-            />
-            {/* <Button handleClick={() => setToVote(vote + 1)} text="vote" /> */}
-            <Button text="vote" />
-            </div>
+            <Header text="Anecdote of the day" />
+            <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
+            <Button text="vote" onClick={() => castVote(selected)} />
+            <Button text="next anecdote" onClick={randomAnecdote} />
+            <Header text="Anecdote with the most votes" />
+            <Anecdote text={anecdotes[topVote]} votes={votes[topVote]} />
         </div>
     )
 }
